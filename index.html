@@ -1,46 +1,219 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Valentine Letter</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+<meta charset="UTF-8">
+<title>For Dhunu 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Aldrich&family=Pixelify+Sans:wght@400..700&display=swap"
-      rel="stylesheet"
-    />
-    <title>Document</title>
-  </head>
-  <body>
-    <!-- Envelope Screen -->
-    <div id="envelope-container">
-      <img src="envelope.png" alt="Envelope" id="envelope" />
-      <p>♡ Letter for You ♡</p>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{
+  margin:0;height:100vh;
+  display:flex;justify-content:center;align-items:center;
+  background:linear-gradient(135deg,#ff5f8a,#ff8fb1);
+  overflow:hidden;
+}
+.card{
+  background:white;width:90%;max-width:380px;
+  padding:25px;border-radius:25px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+h1{color:#ff3d6d}
+p{color:#555}
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-top:20px;
+  position:relative;
+}
+button{
+  border:none;
+  padding:12px 28px;
+  font-size:18px;
+  border-radius:30px;
+  cursor:pointer;
+}
+#yes{background:#ff3d6d;color:white}
+#no{background:#ddd}
+#sure{
+  background:#ffd1dc;
+  display:none;
+  position:absolute;
+  right:-150px;
+  animation:slideIn .6s forwards;
+}
+.hidden{display:none}
+
+/* Shake */
+.shake{animation:shake .4s}
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  50%{transform:translateX(6px)}
+  75%{transform:translateX(-6px)}
+  100%{transform:translateX(0)}
+}
+
+/* Slide */
+@keyframes slideIn{
+  to{right:0}
+}
+
+/* Envelope */
+.envelope{
+  width:260px;height:170px;
+  background:#ffccd5;
+  position:relative;
+  margin:20px auto;
+  border-radius:12px;
+  cursor:pointer;
+}
+.envelope:before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:#ff8fab;
+  clip-path:polygon(0 0,50% 60%,100% 0);
+}
+.envelope.open:before{
+  transform:rotateX(180deg);
+  transform-origin:top;
+  transition:.8s;
+}
+
+/* Photo */
+.photo{
+  width:100%;
+  height:220px;
+  border-radius:20px;
+  background:url('sd.jpg') center/cover no-repeat;
+  margin-top:15px;
+}
+
+/* Sparkles */
+.sparkle{
+  position:absolute;
+  font-size:18px;
+  pointer-events:none;
+  animation:sparkleUp 1.5s ease-out forwards;
+}
+@keyframes sparkleUp{
+  0%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-80px) scale(1.8)}
+}
+
+/* Hearts */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:22px;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  to{transform:translateY(-110vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <!-- QUESTION -->
+  <div id="question">
+    <h1>Dhunu 💖</h1>
+    <p id="text">Will you be my Valentine? 💝</p>
+
+    <div class="buttons">
+      <button id="yes">Yes 💕</button>
+      <button id="no">No 🙈</button>
+      <button id="sure">Sure 😏</button>
     </div>
+  </div>
 
-    <!-- Letter Screen -->
-    <div id="letter-container">
-      <div class="letter-window">
-        <h1 id="letter-title">Will you be my Valentine?</h1>
+  <!-- SURPRISE -->
+  <div id="surprise" class="hidden">
+    <h1>Yayyy Dhunu 💕</h1>
+    <p>Here’s a surprise for you 💌</p>
 
-        <img src="cat_heart.gif" class="cat" id="letter-cat" />
+    <div class="envelope" id="envelope"></div>
+    <p>Tap the envelope 📩</p>
 
-        <div class="buttons" id="letter-buttons">
-          <img src="yes.png" class="btn yes-btn" alt="Yes" />
+    <div id="photo" class="photo hidden"></div>
+  </div>
 
-          <div class="no-wrapper">
-            <img src="no.png" class="btn no-btn" alt="No" />
-          </div>
-        </div>
+</div>
 
-        <p id="final-text" class="final-text" style="display: none">
-          <strong>Valentine Date:</strong> Meow Restaurant at 7pm. Dress fancy!
-        </p>
-      </div>
-    </div>
-    <script src="script.js"></script>
-  </body>
+<script>
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+const sure=document.getElementById("sure");
+const text=document.getElementById("text");
+const question=document.getElementById("question");
+const surprise=document.getElementById("surprise");
+const envelope=document.getElementById("envelope");
+const photo=document.getElementById("photo");
+
+let stage=0;
+
+function acceptFlow(){
+  const tease=[
+    "Are you sure, Dhunu? 😏",
+    "No going back now 💓",
+    "Okay… you’re officially my Valentine 💖"
+  ];
+
+  if(stage < tease.length){
+    text.innerText = tease[stage];
+    stage++;
+  }else{
+    question.classList.add("hidden");
+    surprise.classList.remove("hidden");
+  }
+}
+
+yes.onclick = acceptFlow;
+
+no.onclick = ()=>{
+  no.classList.add("shake");
+  setTimeout(()=>{
+    no.style.display="none";
+    sure.style.display="inline-block";
+  },400);
+};
+
+sure.onclick = acceptFlow;
+
+envelope.onclick = ()=>{
+  envelope.classList.add("open");
+
+  for(let i=0;i<20;i++){
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.innerHTML="✨";
+    s.style.left=(envelope.offsetLeft + 40 + Math.random()*180)+"px";
+    s.style.top=(envelope.offsetTop + 40)+"px";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1500);
+  }
+
+  setTimeout(()=>photo.classList.remove("hidden"),900);
+};
+
+// Floating hearts
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+},400);
+</script>
+
+</body>
 </html>
